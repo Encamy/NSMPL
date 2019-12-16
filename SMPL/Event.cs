@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
 namespace SMPL
 {
-    public class Event
+    public class Event : IComparable<Event>
     {
         private UInt64 m_time;
         private UInt64 m_eventId;
@@ -21,5 +22,22 @@ namespace SMPL
         public UInt64 Time { get => m_time; }
         public UInt64 EventId { get => m_eventId; }
         public UInt64 TransactId { get => m_transactId; }
+
+        public int CompareTo(Event other)
+        {
+            int result = this.Time.CompareTo(other.Time);
+            if (result < 0)
+            {
+                return 1;
+            }
+            else if (result > 0)
+            {
+                return -1;
+            }
+            else
+            {
+                return 0;
+            }
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataStructures;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,7 @@ namespace SMPL
     {
         List<SMQueue> m_queues;
         List<Device> m_devices;
-        Queue<Event> m_events;
+        PriorityQueue<Event> m_events;
 
         UInt64 m_modelTime;
 
@@ -17,7 +18,7 @@ namespace SMPL
         {
             m_queues = new List<SMQueue>();
             m_devices = new List<Device>();
-            m_events = new Queue<Event>();
+            m_events = new PriorityQueue<Event>();
             m_modelTime = 0;
         }
 
@@ -40,7 +41,7 @@ namespace SMPL
         public Event Schedule(UInt64 eventId, UInt64 time, UInt64 transactId)
         {
             Event @event = new Event(eventId, ModelTime + time, transactId);
-            m_events.Enqueue(@event);
+            m_events.Add(@event);
             return @event;
         }
 
@@ -51,14 +52,15 @@ namespace SMPL
                 throw new InvalidOperationException("Event queue is empty");
             }
 
-            Event @event = m_events.Dequeue();
+            Event @event = m_events.Take();
             m_modelTime = @event.Time;
             return (@event.EventId, @event.TransactId);
         }
 
         public void Cancel(UInt64 eventId, UInt64 transactID)
         {
-            m_events = new Queue<Event>(m_events.Where(x => x.TransactId == transactID && x.EventId == eventId));
+            Event @event = m_events.First(x => x.TransactId == transactID && x.EventId == eventId);
+            m_events.Remove(@event);
         }
 
         public void GetReport()
