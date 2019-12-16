@@ -1,6 +1,7 @@
 ﻿using DataStructures;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 
@@ -31,6 +32,21 @@ namespace SMPL
             Device device = new Device(this, name);
             m_devices.Add(device);
             return device;
+        }
+
+        public ReadOnlyCollection<SMQueue> GetQueues()
+        {
+            return m_queues.AsReadOnly();
+        }
+
+        public ReadOnlyCollection<Device> GetDevices()
+        {
+            return m_devices.AsReadOnly();
+        }
+
+        public ReadOnlyCollection<Event> GetEvents()
+        {
+            return new ReadOnlyCollection<Event>(m_events.ToList());
         }
 
         public SMQueue CreateQueue(string name)
@@ -68,11 +84,6 @@ namespace SMPL
         public UInt64 Random(int left, int right)
         {
             return (UInt64)m_random.Next(left, right);
-        }
-
-        public void GetReport()
-        {
-            Console.WriteLine($"Время моделирования {ModelTime} тактов");
         }
     }
 }
