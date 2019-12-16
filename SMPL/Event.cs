@@ -10,7 +10,6 @@ namespace SMPL
         private UInt64 m_time;
         private UInt64 m_eventId;
         private UInt64 m_transactId;
-        private ulong v;
 
         public Event(UInt64 eventId, UInt64 time, UInt64 transactId)
         {
