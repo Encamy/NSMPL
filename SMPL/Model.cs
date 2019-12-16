@@ -11,6 +11,7 @@ namespace SMPL
         List<SMQueue> m_queues;
         List<Device> m_devices;
         PriorityQueue<Event> m_events;
+        Random m_random;
 
         UInt64 m_modelTime;
 
@@ -20,6 +21,7 @@ namespace SMPL
             m_devices = new List<Device>();
             m_events = new PriorityQueue<Event>();
             m_modelTime = 0;
+            m_random = new Random((int)DateTime.UtcNow.Ticks);
         }
 
         public ulong ModelTime { get => m_modelTime; }
@@ -61,6 +63,11 @@ namespace SMPL
         {
             Event @event = m_events.First(x => x.TransactId == transactID && x.EventId == eventId);
             m_events.Remove(@event);
+        }
+
+        public UInt64 Random(int left, int right)
+        {
+            return (UInt64)m_random.Next(left, right);
         }
 
         public void GetReport()
