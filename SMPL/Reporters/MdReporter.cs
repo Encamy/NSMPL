@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SMPL.Language;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -20,7 +21,7 @@ namespace SMPL.Reporters
             m_writer = new StreamWriter(filename);
             m_writer.AutoFlush = true;
 
-            m_writer.WriteLine($"# Model report. Report was generated {DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss")}");
+            m_writer.WriteLine($"# {GlobalizationEngine.GetString("Model report")}. {GlobalizationEngine.GetString("Report was generated")} {DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss")}");
             m_writer.WriteLine("");
             GetDevicesReport();
             m_writer.WriteLine("");
@@ -29,10 +30,11 @@ namespace SMPL.Reporters
 
         private void GetQueuesReport()
         {
-            m_writer.WriteLine("## Information about queues");
+            m_writer.WriteLine($"## {GlobalizationEngine.GetString("Information about queues")}");
             m_writer.WriteLine("");
-            m_writer.WriteLine("| Queue name | Max observed length | Average idle time | Average length |");
-            m_writer.WriteLine("|-------------|--------------------|-------------------|----------------|");
+            m_writer.WriteLine($"| {GlobalizationEngine.GetString("Name of queue")} | {GlobalizationEngine.GetString("Max observed length")} | " +
+                $"{GlobalizationEngine.GetString("Average idle time")} | {GlobalizationEngine.GetString("Average length")} |");
+            m_writer.WriteLine($"|-------------|--------------------|-------------------|----------------|");
             foreach (SMQueue queue in m_model.GetQueues())
             {
                 double avgIdleTime = queue.WaitTimeSum * 1.0f / queue.MaxObeservedLength;
@@ -43,10 +45,11 @@ namespace SMPL.Reporters
 
         private void GetDevicesReport()
         {
-            m_writer.WriteLine("## Information about devices");
+            m_writer.WriteLine($"## {GlobalizationEngine.GetString("Information about devices")}");
             m_writer.WriteLine("");
-            m_writer.WriteLine("| Device name | Avg processign time | Load percentage | Transact count |");
-            m_writer.WriteLine("|-------------|---------------------|-----------------|----------------|");
+            m_writer.WriteLine($"| {GlobalizationEngine.GetString("Name of device")} | {GlobalizationEngine.GetString("Average processing time")} | " +
+                $" {GlobalizationEngine.GetString("Average processing time")} | {GlobalizationEngine.GetString("Transact count")} |");
+            m_writer.WriteLine($"|-------------|---------------------|-----------------|----------------|");
             foreach (Device device in m_model.GetDevices())
             {
                 string avgProcessingTime = (device.TimeUsedSum * 1.0f / device.TransactCount).ToString("0.##");

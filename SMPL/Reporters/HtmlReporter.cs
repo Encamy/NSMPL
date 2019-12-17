@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SMPL.Language;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -28,14 +29,14 @@ namespace SMPL.Reporters
         private void GetQueuesReport()
         {
             m_writer.WriteLine(
-                "   <table>\r\n" +
-                "    <caption>Information about queues</caption>\r\n" +
-                "    <tr>\r\n" +
-                "     <th>Queue name</th>\r\n" +
-                "     <th>Max observed length</th>\r\n" +
-                "     <th>Average idle time</th>\r\n" +
-                "     <th>Average length</th>\r\n" +
-                "    </tr>");
+                $"   <table>\r\n" +
+                $"    <caption>{GlobalizationEngine.GetString("Information about queues")}</caption>\r\n" +
+                $"    <tr>\r\n" +
+                $"     <th>{GlobalizationEngine.GetString("Name of queue")}</th>\r\n" +
+                $"     <th>{GlobalizationEngine.GetString("Max observed length")}</th>\r\n" +
+                $"     <th>{GlobalizationEngine.GetString("Average idle time")}</th>\r\n" +
+                $"     <th>{GlobalizationEngine.GetString("Average length")}</th>\r\n" +
+                $"    </tr>");
 
             foreach (SMQueue queue in m_model.GetQueues())
             {
@@ -50,14 +51,14 @@ namespace SMPL.Reporters
         private void GetDevicesReport()
         {
             m_writer.WriteLine(
-                "   <table>\r\n" +
-                "    <caption>Information about devices</caption>\r\n" +
-                "    <tr>\r\n" +
-                "     <th>Device name</th>\r\n" +
-                "     <th>Avg processign time</th>\r\n" +
-                "     <th>Load percentage</th>\r\n" +
-                "     <th>Transact count</th>\r\n" +
-                "    </tr>");
+                $"   <table>\r\n" +
+                $"    <caption>{GlobalizationEngine.GetString("Information about devices")}</caption>\r\n" +
+                $"    <tr>\r\n" +
+                $"     <th>{GlobalizationEngine.GetString("Name of device")}</th>\r\n" +
+                $"     <th>{GlobalizationEngine.GetString("Average processing time")}</th>\r\n" +
+                $"     <th>{GlobalizationEngine.GetString("Load percentage")}</th>\r\n" +
+                $"     <th>{GlobalizationEngine.GetString("Transact count")}</th>\r\n" +
+                $"    </tr>");
 
             foreach (Device device in m_model.GetDevices())
             {
@@ -112,7 +113,7 @@ namespace SMPL.Reporters
         private void WriteBody()
         {
             m_writer.WriteLine(" <body>\r\n");
-            m_writer.WriteLine($"   <h1>Report was generated {DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss")}</h1>");
+            m_writer.WriteLine($"   <h1>{GlobalizationEngine.GetString("Report was generated")} {DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss")}</h1>");
             GetDevicesReport();
             GetQueuesReport();
             m_writer.WriteLine(" </body>");

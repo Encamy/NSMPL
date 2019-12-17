@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SMPL.Language;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -23,6 +24,7 @@ namespace SMPL.Reporters
                 LogDuplicator.Init(filename);
             }
 
+            Console.WriteLine($"{GlobalizationEngine.GetString("Model report")}. {GlobalizationEngine.GetString("Report was generated")} {DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss")}");
             GetCurrentState(m_maxPossibleLines);
             Console.WriteLine(" ");
             Console.WriteLine(" ");
@@ -31,7 +33,7 @@ namespace SMPL.Reporters
 
         public void GetCurrentState(int maxPossibleLines = 100)
         {
-            Console.WriteLine($"Current model time: {m_model.ModelTime}");
+            Console.WriteLine($"{GlobalizationEngine.GetString("Current model time")}: {m_model.ModelTime}");
             GetEventsState(maxPossibleLines);
             GetDevicesState(maxPossibleLines);
             GetQueuesState(maxPossibleLines);
@@ -39,26 +41,26 @@ namespace SMPL.Reporters
 
         public void GetModelResult(int maxPossibleLines = 100)
         {
-            Console.WriteLine("Total model results:");
+            Console.WriteLine(GlobalizationEngine.GetString("Total model results") + ":");
             GetDevicesReport(maxPossibleLines);
             GetQueuesReport(maxPossibleLines);
         }
 
         private void GetQueuesReport(int maxPossibleLines)
         {
-            Console.WriteLine("  Information about queues:");
+            Console.WriteLine($"  {GlobalizationEngine.GetString("Information about queues")}:");
             int outputLength = 0;
             foreach (SMQueue queue in m_model.GetQueues())
             {
                 double avgIdleTime = queue.WaitTimeSum * 1.0f / queue.MaxObeservedLength;
-                Console.WriteLine($"    Name of queue: {queue.Name}");
-                Console.WriteLine($"    Max observed length: {queue.MaxObeservedLength}");
-                Console.WriteLine($"    Average idle time: {avgIdleTime.ToString("0.##")}");
-                Console.WriteLine($"    Average length: {(queue.TimeQueueSum * 1.0f / m_model.ModelTime).ToString("0.##")}");
+                Console.WriteLine($"    {GlobalizationEngine.GetString("Name of queue")}: {queue.Name}");
+                Console.WriteLine($"    {GlobalizationEngine.GetString("Max observed length")}: {queue.MaxObeservedLength}");
+                Console.WriteLine($"    {GlobalizationEngine.GetString("Average idle time")}: {avgIdleTime.ToString("0.##")}");
+                Console.WriteLine($"    {GlobalizationEngine.GetString("Average length")}: {(queue.TimeQueueSum * 1.0f / m_model.ModelTime).ToString("0.##")}");
 
                 if (maxPossibleLines != -1 && outputLength++ > maxPossibleLines)
                 {
-                    Console.WriteLine("There are too many items to be displayed. Truncating output. If you want to avoid it, set maxPossibleLines to -1");
+                    Console.WriteLine(GlobalizationEngine.GetString("There are too many items to be displayed. Truncating output. If you want to avoid it, set maxPossibleLines to -1"));
                     return;
                 }
             }
@@ -66,19 +68,19 @@ namespace SMPL.Reporters
 
         private void GetDevicesReport(int maxPossibleLines)
         {
-            Console.WriteLine("  Information about devices");
+            Console.WriteLine($"  {GlobalizationEngine.GetString("Information about devices")}:");
             int outputLength = 0;
             foreach (Device device in m_model.GetDevices())
             {
                 double avgProcessingTime = device.TimeUsedSum * 1.0f / device.TransactCount;
-                Console.WriteLine($"    Name of device: {device.Name}");
-                Console.WriteLine($"    Average processing time: {avgProcessingTime.ToString("0.##")}");
-                Console.WriteLine($"    Load percentage : {(device.TimeUsedSum * 1.0f / m_model.ModelTime * 100).ToString("0.##")}%");
-                Console.WriteLine($"    Transact count : {device.TransactCount}");
+                Console.WriteLine($"    {GlobalizationEngine.GetString("Name of device")}: {device.Name}");
+                Console.WriteLine($"    {GlobalizationEngine.GetString("Average processing time")}: {avgProcessingTime.ToString("0.##")}");
+                Console.WriteLine($"    {GlobalizationEngine.GetString("Load percentage")}: {(device.TimeUsedSum * 1.0f / m_model.ModelTime * 100).ToString("0.##")}%");
+                Console.WriteLine($"    {GlobalizationEngine.GetString("Transact count")}: {device.TransactCount}");
 
                 if (maxPossibleLines != -1 && outputLength++ > maxPossibleLines)
                 {
-                    Console.WriteLine("There are too many items to be displayed. Truncating output. If you want to avoid it, set maxPossibleLines to -1");
+                    Console.WriteLine(GlobalizationEngine.GetString("There are too many items to be displayed. Truncating output. If you want to avoid it, set maxPossibleLines to -1"));
                     return;
                 }
             }
@@ -86,17 +88,17 @@ namespace SMPL.Reporters
 
         private void GetQueuesState(int maxPossibleLines)
         {
-            Console.WriteLine("  State of queues:");
+            Console.WriteLine($"  {GlobalizationEngine.GetString("State of queues")}:");
             int outputLength = 0;
             foreach (SMQueue queue in m_model.GetQueues())
             {
-                Console.WriteLine($"    Name of queue: {queue.Name}");
-                Console.WriteLine($"    Max observed length: {queue.MaxObeservedLength}");
-                Console.WriteLine($"    Number of current items: {queue.Count}");
+                Console.WriteLine($"    {GlobalizationEngine.GetString("Name of queue")}: {queue.Name}");
+                Console.WriteLine($"    {GlobalizationEngine.GetString("Max observed length")}: {queue.MaxObeservedLength}");
+                Console.WriteLine($"    {GlobalizationEngine.GetString("Number of current items")}: {queue.Count}");
 
                 if (maxPossibleLines != -1 && outputLength++ > maxPossibleLines)
                 {
-                    Console.WriteLine("There are too many items to be displayed. Truncating output. If you want to avoid it, set maxPossibleLines to -1");
+                    Console.WriteLine(GlobalizationEngine.GetString("There are too many items to be displayed. Truncating output. If you want to avoid it, set maxPossibleLines to -1"));
                     return;
                 }
             }
@@ -104,17 +106,17 @@ namespace SMPL.Reporters
 
         private void GetDevicesState(int maxPossibleLines)
         {
-            Console.WriteLine("  State of devices:");
+            Console.WriteLine($"  {GlobalizationEngine.GetString("State of devices")}:");
             int outputLength = 0;
             foreach (Device device in m_model.GetDevices())
             {
-                Console.WriteLine($"    Name of device: {device.Name}");
-                Console.WriteLine($"    Number of transact: {device.CurrentTransactId}");
-                Console.WriteLine($"    Last time used: {device.LastTimeUsed}");
+                Console.WriteLine($"    {GlobalizationEngine.GetString("Name of device")}: {device.Name}");
+                Console.WriteLine($"    {GlobalizationEngine.GetString("Number of transact")}: {device.CurrentTransactId}");
+                Console.WriteLine($"    {GlobalizationEngine.GetString("Last time used")}: {device.LastTimeUsed}");
 
                 if (maxPossibleLines != -1 && outputLength++ > maxPossibleLines)
                 {
-                    Console.WriteLine("There are too many items to be displayed. Truncating output. If you want to avoid it, set maxPossibleLines to -1");
+                    Console.WriteLine(GlobalizationEngine.GetString("There are too many items to be displayed. Truncating output. If you want to avoid it, set maxPossibleLines to -1"));
                     return;
                 }
             }
@@ -122,17 +124,17 @@ namespace SMPL.Reporters
 
         private void GetEventsState(int maxPossibleLines)
         {
-            Console.WriteLine("  State of unprocessed events:");
+            Console.WriteLine($"  {GlobalizationEngine.GetString("State of unprocessed events")}:");
             int outputLength = 0;
             foreach (Event @event in m_model.GetEvents())
             {
-                Console.WriteLine($"    Time of event: {@event.Time}");
-                Console.WriteLine($"    Number of event: {@event.EventId.ToString()}");
-                Console.WriteLine($"    Transact number: {@event.TransactId}");
+                Console.WriteLine($"    {GlobalizationEngine.GetString("Time of event")}: {@event.Time}");
+                Console.WriteLine($"    {GlobalizationEngine.GetString("Number of event")}: {@event.EventId.ToString()}");
+                Console.WriteLine($"    {GlobalizationEngine.GetString("Number of transact")}: {@event.TransactId}");
 
                 if (maxPossibleLines != -1 && outputLength++ > maxPossibleLines)
                 {
-                    Console.WriteLine("There are too many items to be displayed. Truncating output. If you want to avoid it, set maxPossibleLines to -1");
+                    Console.WriteLine(GlobalizationEngine.GetString("There are too many items to be displayed. Truncating output. If you want to avoid it, set maxPossibleLines to -1"));
                     return;
                 }
             }

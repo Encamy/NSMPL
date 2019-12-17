@@ -1,6 +1,7 @@
 ﻿using SMPL;
 using SMPL.Reporters;
 using System;
+using static SMPL.Language.GlobalizationEngine;
 
 namespace Example1
 {
@@ -16,6 +17,8 @@ namespace Example1
 
         static void Main(string[] args)
         {
+            InitGlobalizationEngine(Language.EN);
+
             Model model = new Model();
             Device device = model.CreateDevice("Master");
             SMQueue queue = model.CreateQueue("Accumulator");
