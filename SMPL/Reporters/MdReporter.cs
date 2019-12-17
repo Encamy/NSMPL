@@ -20,7 +20,7 @@ namespace SMPL.Reporters
             m_writer = new StreamWriter(filename);
             m_writer.AutoFlush = true;
 
-            m_writer.WriteLine($"# Model report. Was generated {DateTime.Now.ToString("dd-MM-yyyy hh:mm:ss")}");
+            m_writer.WriteLine($"# Model report. Report was generated {DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss")}");
             m_writer.WriteLine("");
             GetDevicesReport();
             m_writer.WriteLine("");
@@ -29,15 +29,15 @@ namespace SMPL.Reporters
 
         private void GetQueuesReport()
         {
-            m_writer.WriteLine("## Information about devices");
+            m_writer.WriteLine("## Information about queues");
             m_writer.WriteLine("");
-            m_writer.WriteLine("| Device name | Avg processign time | Load percentage | Transact count |");
-            m_writer.WriteLine("|-------------|---------------------|-----------------|----------------|");
-            foreach (Device device in m_model.GetDevices())
+            m_writer.WriteLine("| Queue name | Max observed length | Average idle time | Average length |");
+            m_writer.WriteLine("|-------------|--------------------|-------------------|----------------|");
+            foreach (SMQueue queue in m_model.GetQueues())
             {
-                string avgProcessingTime = (device.TimeUsedSum * 1.0f / device.TransactCount).ToString("0.##");
-                string loadPercentage = (device.TimeUsedSum * 1.0f / m_model.ModelTime * 100).ToString("0.##");
-                m_writer.WriteLine($"| {device.Name} | {avgProcessingTime} | {loadPercentage} | {device.TransactCount} |");
+                double avgIdleTime = queue.WaitTimeSum * 1.0f / queue.MaxObeservedLength;
+                string avgLength = (queue.TimeQueueSum * 1.0f / m_model.ModelTime).ToString("0.##");
+                m_writer.WriteLine($"| {queue.Name} | {queue.MaxObeservedLength} | {avgIdleTime.ToString("0.##")} | {avgLength} |");
             }
         }
 
@@ -51,7 +51,7 @@ namespace SMPL.Reporters
             {
                 string avgProcessingTime = (device.TimeUsedSum * 1.0f / device.TransactCount).ToString("0.##");
                 string loadPercentage = (device.TimeUsedSum * 1.0f / m_model.ModelTime * 100).ToString("0.##");
-                m_writer.WriteLine($"| {device.Name} | {avgProcessingTime} | {loadPercentage} | {device.TransactCount} |");
+                m_writer.WriteLine($"| {device.Name} | {avgProcessingTime} | {loadPercentage}% | {device.TransactCount} |");
             }
         }
 

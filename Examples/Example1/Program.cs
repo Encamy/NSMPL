@@ -96,6 +96,11 @@ namespace Example1
             {
                 mdReporter.GetReport("output.md");
             }
+
+            using (HtmlReporter htmlReporter = new HtmlReporter(model))
+            {
+                htmlReporter.GetReport("output.html");
+            }
         }
     }
 }
