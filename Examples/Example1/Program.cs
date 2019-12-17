@@ -1,4 +1,5 @@
 ﻿using SMPL;
+using SMPL.Reporters;
 using System;
 
 namespace Example1
@@ -88,9 +89,13 @@ namespace Example1
             }
             while (@event != Events.EventEnd);
 
-            TextReporter textReporter = new TextReporter(model, "output.txt");
-            textReporter.GetTotalOutput();
+            TextReporter textReporter = new TextReporter(model);
+            textReporter.GetReport("output.txt");
 
+            using (MdReporter mdReporter = new MdReporter(model))
+            {
+                mdReporter.GetReport("output.md");
+            }
         }
     }
 }

@@ -3,24 +3,27 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace SMPL
+namespace SMPL.Reporters
 {
-    public class TextReporter
+    public class TextReporter : IReporter
     {
-        Model m_model;
-        public TextReporter(Model model, string outputFilename = null)
+        private Model m_model;
+        private int m_maxPossibleLines;
+
+        public TextReporter(Model model, string outputFilename = null, int maxPossibleLines = 100)
         {
             m_model = model;
-
-            if (outputFilename != null && outputFilename.Length > 0)
-            {
-                LogDuplicator.Init(outputFilename);
-            }
+            m_maxPossibleLines = maxPossibleLines;
         }
 
-        public void GetTotalOutput(int maxPossibleLines = 100)
+        public void GetReport(string filename = null)
         {
-            GetCurrentState(maxPossibleLines);
+            if (filename != null && filename.Length > 0)
+            {
+                LogDuplicator.Init(filename);
+            }
+
+            GetCurrentState(m_maxPossibleLines);
             Console.WriteLine(" ");
             Console.WriteLine(" ");
             GetModelResult();
