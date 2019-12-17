@@ -46,7 +46,7 @@ namespace Example2
 
         static void Main(string[] args)
         {
-            InitGlobalizationEngine(Language.EN);
+            InitGlobalizationEngine(Language.RU);
 
             Model model = new Model();
             Device processor = model.CreateDevice("Processor");
@@ -79,7 +79,7 @@ namespace Example2
                 {
                     case Events.Incoming1:
                         {
-                            if (m_currentItems1 + 1 > m_maxAvailableItems1)
+                            if (m_currentItems1 > m_maxAvailableItems1)
                             {
                                 // Do nothing delete item and schedule next
                                 model.Schedule((int)Events.Incoming1, model.Random(m1 - s1, m1 + s1), transactCounter);
@@ -93,7 +93,7 @@ namespace Example2
                         }
                     case Events.Incoming2:
                         {
-                            if (m_currentItems2 + 1 > m_maxAvailableItems2)
+                            if (m_currentItems2 > m_maxAvailableItems2)
                             {
                                 // Do nothing delete item and schedule next
                                 model.Schedule((int)Events.Incoming2, model.Random(m2 - s2, m2 + s2), transactCounter);
