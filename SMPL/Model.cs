@@ -13,6 +13,7 @@ namespace SMPL
         List<Device> m_devices;
         PriorityQueue<Event> m_events;
         Random m_random;
+        NormalRandom m_normalDistribution;
 
         UInt64 m_modelTime;
 
@@ -23,6 +24,7 @@ namespace SMPL
             m_events = new PriorityQueue<Event>();
             m_modelTime = 0;
             m_random = new Random((int)DateTime.UtcNow.Ticks);
+            m_normalDistribution = new NormalRandom();
         }
 
         public ulong ModelTime { get => m_modelTime; }
@@ -84,6 +86,11 @@ namespace SMPL
         public UInt64 Random(int left, int right)
         {
             return (UInt64)m_random.Next(left, right);
+        }
+
+        public UInt64 NormalDistribution(int deviation, int expectation)
+        {
+            return (UInt64)Math.Abs(Math.Round(m_normalDistribution.NextDouble() * deviation + expectation));
         }
     }
 }
