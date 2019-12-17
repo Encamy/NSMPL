@@ -18,10 +18,16 @@ namespace Example2
         const int T2_dop = 1;
         const int T3 = 8;
         const int T3_dop = 2;
+
         const int d1 = 20;
         const int d2 = 40;
         const int z1 = 2;
         const int z2 = 4;
+
+        const int m_maxAvailableItems1 = 3;
+        const int m_maxAvailableItems2 = 3;
+        static int m_currentItems1 = 0;
+        static int m_currentItems2 = 0;
 
         enum Events
         {
@@ -73,6 +79,13 @@ namespace Example2
                 {
                     case Events.Incoming1:
                         {
+                            if (m_currentItems1 + 1 > m_maxAvailableItems1)
+                            {
+                                // Do nothing delete item and schedule next
+                                model.Schedule((int)Events.Incoming1, model.Random(m1 - s1, m1 + s1), transactCounter);
+                                break;
+                            }
+                            m_currentItems1++;
                             model.Schedule((int)Events.ProcessorReserve1, 0, transact);
                             transactCounter++;
                             model.Schedule((int)Events.Incoming1, model.Random(m1 - s1, m1 + s1), transactCounter);
@@ -80,9 +93,16 @@ namespace Example2
                         }
                     case Events.Incoming2:
                         {
+                            if (m_currentItems2 + 1 > m_maxAvailableItems2)
+                            {
+                                // Do nothing delete item and schedule next
+                                model.Schedule((int)Events.Incoming2, model.Random(m2 - s2, m2 + s2), transactCounter);
+                                break;
+                            }
+                            m_currentItems2++;
                             model.Schedule((int)Events.ProcessorReserve2, 0, transact);
                             transactCounter++;
-                            model.Schedule((int)Events.Incoming2, model.Random(m1 - s1, m1 + s2), transactCounter);
+                            model.Schedule((int)Events.Incoming2, model.Random(m2 - s2, m2 + s2), transactCounter);
                             break;
                         }
                     case Events.ProcessorReserve1:
@@ -195,6 +215,7 @@ namespace Example2
                                 }
                             }
 
+                            m_currentItems1--;
                             resultQueue1.Add(transact, 1);
                             break;
                         }
@@ -210,6 +231,7 @@ namespace Example2
                                 }
                             }
 
+                            m_currentItems2--;
                             resultQueue2.Add(transact, 1);
                             break;
                         }
