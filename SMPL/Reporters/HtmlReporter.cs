@@ -34,15 +34,15 @@ namespace SMPL.Reporters
                 $"    <tr>\r\n" +
                 $"     <th>{GlobalizationEngine.GetString("Name of queue")}</th>\r\n" +
                 $"     <th>{GlobalizationEngine.GetString("Max observed length")}</th>\r\n" +
-                $"     <th>{GlobalizationEngine.GetString("Average idle time")}</th>\r\n" +
+                $"     <th>{GlobalizationEngine.GetString("Average wait time")}</th>\r\n" +
                 $"     <th>{GlobalizationEngine.GetString("Average length")}</th>\r\n" +
                 $"    </tr>");
 
             foreach (SMQueue queue in m_model.GetQueues())
             {
-                double avgIdleTime = queue.WaitTimeSum * 1.0f / queue.MaxObeservedLength;
+                double avgWaitTime = queue.WaitTimeSum * 1.0f / queue.MaxObservedLength;
                 string avgLength = (queue.TimeQueueSum * 1.0f / m_model.ModelTime).ToString("0.##");
-                m_writer.WriteLine($"<tr><td>{queue.Name}</td><td>{queue.MaxObeservedLength}</td><td>{avgIdleTime.ToString("0.##")}</td><td>{avgLength}</td></tr>");
+                m_writer.WriteLine($"<tr><td>{queue.Name}</td><td>{queue.MaxObservedLength}</td><td>{avgWaitTime.ToString("0.##")}</td><td>{avgLength}</td></tr>");
             }
 
             m_writer.WriteLine("   </table>");

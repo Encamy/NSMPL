@@ -52,10 +52,10 @@ namespace SMPL.Reporters
             int outputLength = 0;
             foreach (SMQueue queue in m_model.GetQueues())
             {
-                double avgIdleTime = queue.WaitTimeSum * 1.0f / queue.MaxObeservedLength;
+                double avgWaitTime = queue.WaitTimeSum * 1.0f / queue.MaxObservedLength;
                 Console.WriteLine($"    {GlobalizationEngine.GetString("Name of queue")}: {queue.Name}");
-                Console.WriteLine($"    {GlobalizationEngine.GetString("Max observed length")}: {queue.MaxObeservedLength}");
-                Console.WriteLine($"    {GlobalizationEngine.GetString("Average idle time")}: {avgIdleTime.ToString("0.##")}");
+                Console.WriteLine($"    {GlobalizationEngine.GetString("Max observed length")}: {queue.MaxObservedLength}");
+                Console.WriteLine($"    {GlobalizationEngine.GetString("Average wait time")}: {avgWaitTime.ToString("0.##")}");
                 Console.WriteLine($"    {GlobalizationEngine.GetString("Average length")}: {(queue.TimeQueueSum * 1.0f / m_model.ModelTime).ToString("0.##")}");
 
                 if (maxPossibleLines != -1 && outputLength++ > maxPossibleLines)
@@ -93,7 +93,7 @@ namespace SMPL.Reporters
             foreach (SMQueue queue in m_model.GetQueues())
             {
                 Console.WriteLine($"    {GlobalizationEngine.GetString("Name of queue")}: {queue.Name}");
-                Console.WriteLine($"    {GlobalizationEngine.GetString("Max observed length")}: {queue.MaxObeservedLength}");
+                Console.WriteLine($"    {GlobalizationEngine.GetString("Max observed length")}: {queue.MaxObservedLength}");
                 Console.WriteLine($"    {GlobalizationEngine.GetString("Number of current items")}: {queue.Count}");
 
                 if (maxPossibleLines != -1 && outputLength++ > maxPossibleLines)

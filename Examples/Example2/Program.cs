@@ -56,8 +56,8 @@ namespace Example2
 
             UInt64 transactCounter = 1;
 
-            model.Schedule((int)Events.Incoming1, model.NormalDistribution(m1, s1), transactCounter);
-            model.Schedule((int)Events.Incoming2, model.NormalDistribution(m2, s2), ++transactCounter);
+            model.Schedule((int)Events.Incoming1, model.Random(m1 - s1, m1 + s1), transactCounter);
+            model.Schedule((int)Events.Incoming2, model.Random(m2 - s2, m2 + s2), ++transactCounter);
             model.Schedule((int)Events.End, (ulong)TimeSpan.FromMinutes(24).TotalMilliseconds, (ulong)1e9);
 
             UInt64 transact = 1;
@@ -75,14 +75,14 @@ namespace Example2
                         {
                             model.Schedule((int)Events.ProcessorReserve1, 0, transact);
                             transactCounter++;
-                            model.Schedule((int)Events.Incoming1, model.NormalDistribution(m1, s1), transactCounter);
+                            model.Schedule((int)Events.Incoming1, model.Random(m1 - s1, m1 + s1), transactCounter);
                             break;
                         }
                     case Events.Incoming2:
                         {
                             model.Schedule((int)Events.ProcessorReserve2, 0, transact);
                             transactCounter++;
-                            model.Schedule((int)Events.Incoming2, model.NormalDistribution(m1, s1), transactCounter);
+                            model.Schedule((int)Events.Incoming2, model.Random(m1 - s1, m1 + s2), transactCounter);
                             break;
                         }
                     case Events.ProcessorReserve1:

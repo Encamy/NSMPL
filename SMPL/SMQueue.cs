@@ -36,7 +36,7 @@ namespace SMPL
 
         public bool IsReadOnly => throw new NotImplementedException();
 
-        public UInt64 MaxObeservedLength { get => m_maxObeservedLength; }
+        public UInt64 MaxObservedLength { get => m_maxObeservedLength; }
 
         public void Add(Item item)
         {
