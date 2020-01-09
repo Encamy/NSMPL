@@ -33,6 +33,7 @@ namespace SMPL.Language
             { "State of unprocessed events", "State of unprocessed events" },
             { "Model report", "Model report" },
             { "Report was generated", "Report was generated" },
+            { "Channel count", "Channel count" },
         };
 
         private static Dictionary<string, string> m_russianDictionary = new Dictionary<string, string>
@@ -60,6 +61,7 @@ namespace SMPL.Language
             { "State of unprocessed events", "Состояние необработанных событий" },
             { "Model report", "Отчет о модели" },
             { "Report was generated", "Отчет был сформирован" },
+            { "Channel count", "Количество каналов" },
         };
 
         public static void InitGlobalizationEngine(Language language)

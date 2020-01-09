@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace SMPL.Reporters
@@ -45,16 +46,26 @@ namespace SMPL.Reporters
 
         private void GetDevicesReport()
         {
+            bool haveMultiChannelDevice = m_model.GetDevices().Count(x => x is MultiChannelDevice) > 0;
+
             m_writer.WriteLine($"## {GlobalizationEngine.GetString("Information about devices")}");
             m_writer.WriteLine("");
             m_writer.WriteLine($"| {GlobalizationEngine.GetString("Name of device")} | {GlobalizationEngine.GetString("Average processing time")} | " +
-                $" {GlobalizationEngine.GetString("Average processing time")} | {GlobalizationEngine.GetString("Transact count")} |");
-            m_writer.WriteLine($"|-------------|---------------------|-----------------|----------------|");
+                $" {GlobalizationEngine.GetString("Average processing time")} | {GlobalizationEngine.GetString("Transact count")} | {(haveMultiChannelDevice? GlobalizationEngine.GetString("Channel count") + " |":"")}");
+            m_writer.WriteLine($"|-------------|---------------------|-----------------|----------------|{(haveMultiChannelDevice ?"----------------|":"")}");
             foreach (Device device in m_model.GetDevices())
             {
                 string avgProcessingTime = (device.TimeUsedSum * 1.0f / device.TransactCount).ToString("0.##");
                 string loadPercentage = (device.TimeUsedSum * 1.0f / m_model.ModelTime * 100).ToString("0.##");
-                m_writer.WriteLine($"| {device.Name} | {avgProcessingTime} | {loadPercentage}% | {device.TransactCount} |");
+                string line = $"| {device.Name} | {avgProcessingTime} | {loadPercentage}% | {device.TransactCount} |";
+
+                if (device is MultiChannelDevice)
+                {
+                    MultiChannelDevice multichannelDevice = device as MultiChannelDevice;
+                    line += $" {multichannelDevice.StorageSize} |";
+                }
+
+                m_writer.WriteLine(line);
             }
         }
 

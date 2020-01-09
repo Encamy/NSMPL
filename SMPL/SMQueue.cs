@@ -34,7 +34,7 @@ namespace SMPL
         public UInt64 LastTimeChanged { get => m_lastTimeChanged; }
         public string Name { get => m_name; set => m_name = value; }
 
-        public bool IsReadOnly => throw new NotImplementedException();
+        public bool IsReadOnly => false;
 
         public UInt64 MaxObservedLength { get => m_maxObeservedLength; }
 

@@ -2,7 +2,7 @@
 
 namespace SMPL
 {
-    public class Device
+    public partial class Device
     {
         public string Name { get => m_name; set => m_name = value; }
         public UInt64? CurrentTransactId { get => m_currentTransactId; }
@@ -10,12 +10,12 @@ namespace SMPL
         public UInt64 TransactCount { get => m_transactCount; }
         public UInt64 TimeUsedSum { get => m_timeUsedSum; }
 
-        private string m_name;
         private UInt64? m_currentTransactId;
-        private UInt64 m_lastTimeUsed;
-        private UInt64 m_transactCount;
-        private UInt64 m_timeUsedSum;
-        private Model m_model;
+        protected string m_name;
+        protected UInt64 m_lastTimeUsed;
+        protected UInt64 m_transactCount;
+        protected UInt64 m_timeUsedSum;
+        protected Model m_model;
 
         public Device(Model model, string name)
         {
@@ -24,7 +24,7 @@ namespace SMPL
             m_timeUsedSum = 0;
         }
 
-        public void Reserve(UInt64 transactId)
+        virtual public void Reserve(UInt64 transactId)
         {
             if (m_currentTransactId.HasValue && m_currentTransactId != 0)
             {
@@ -35,7 +35,7 @@ namespace SMPL
             m_lastTimeUsed = m_model.ModelTime;
         }
 
-        public void Release()
+        virtual public UInt64 Release()
         {
             if (!m_currentTransactId.HasValue || m_currentTransactId == 0)
             {
@@ -44,10 +44,14 @@ namespace SMPL
 
             m_timeUsedSum += m_model.ModelTime - LastTimeUsed;
             m_transactCount++;
+
+            UInt64 transactId = m_currentTransactId.Value;
             m_currentTransactId = null;
+
+            return transactId;
         }
 
-        public State GetState()
+        virtual public State GetState()
         {
             if (m_currentTransactId.HasValue && m_currentTransactId != 0)
             {
@@ -55,12 +59,6 @@ namespace SMPL
             }
 
             return State.Idle;
-        }
-
-        public enum State
-        {
-            Idle,
-            Active
         }
     }
 }

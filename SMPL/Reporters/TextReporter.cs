@@ -11,7 +11,7 @@ namespace SMPL.Reporters
         private Model m_model;
         private int m_maxPossibleLines;
 
-        public TextReporter(Model model, string outputFilename = null, int maxPossibleLines = 100)
+        public TextReporter(Model model, int maxPossibleLines = 100)
         {
             m_model = model;
             m_maxPossibleLines = maxPossibleLines;
@@ -77,6 +77,12 @@ namespace SMPL.Reporters
                 Console.WriteLine($"    {GlobalizationEngine.GetString("Average processing time")}: {avgProcessingTime.ToString("0.##")}");
                 Console.WriteLine($"    {GlobalizationEngine.GetString("Load percentage")}: {(device.TimeUsedSum * 1.0f / m_model.ModelTime * 100).ToString("0.##")}%");
                 Console.WriteLine($"    {GlobalizationEngine.GetString("Transact count")}: {device.TransactCount}");
+
+                if (device is MultiChannelDevice)
+                {
+                    MultiChannelDevice multichannelDevice = device as MultiChannelDevice;
+                    Console.WriteLine($"    {GlobalizationEngine.GetString("Channel count")}: {multichannelDevice.StorageSize}");
+                }
 
                 if (maxPossibleLines != -1 && outputLength++ > maxPossibleLines)
                 {

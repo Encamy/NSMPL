@@ -37,6 +37,14 @@ namespace SMPL
             return device;
         }
 
+        public MultiChannelDevice CreateMultiChannelDevice(string name, int capacity)
+        {
+            MultiChannelDevice device = new MultiChannelDevice(this, name);
+            device.SetCapacity(capacity);
+            m_devices.Add(device);
+            return device;
+        }
+
         public ReadOnlyCollection<SMQueue> GetQueues()
         {
             return m_queues.AsReadOnly();

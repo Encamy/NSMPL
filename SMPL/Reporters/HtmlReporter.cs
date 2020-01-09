@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace SMPL.Reporters
@@ -50,6 +51,8 @@ namespace SMPL.Reporters
 
         private void GetDevicesReport()
         {
+            bool haveMultiChannelDevice = m_model.GetDevices().Count(x => x is MultiChannelDevice) > 0;
+
             m_writer.WriteLine(
                 $"   <table>\r\n" +
                 $"    <caption>{GlobalizationEngine.GetString("Information about devices")}</caption>\r\n" +
@@ -58,13 +61,20 @@ namespace SMPL.Reporters
                 $"     <th>{GlobalizationEngine.GetString("Average processing time")}</th>\r\n" +
                 $"     <th>{GlobalizationEngine.GetString("Load percentage")}</th>\r\n" +
                 $"     <th>{GlobalizationEngine.GetString("Transact count")}</th>\r\n" +
+                (haveMultiChannelDevice ? $"     <th>{GlobalizationEngine.GetString("Channel count")}</th>\r\n" : "") +
                 $"    </tr>");
 
             foreach (Device device in m_model.GetDevices())
             {
                 string avgProcessingTime = (device.TimeUsedSum * 1.0f / device.TransactCount).ToString("0.##");
                 string loadPercentage = (device.TimeUsedSum * 1.0f / m_model.ModelTime * 100).ToString("0.##");
-                m_writer.WriteLine($"<tr><td>{device.Name}</td><td>{avgProcessingTime}</td><td>{loadPercentage}%</td><td>{device.TransactCount}</td></tr>");
+                m_writer.WriteLine($"<tr><td>{device.Name}</td><td>{avgProcessingTime}</td><td>{loadPercentage}%</td><td>{device.TransactCount}</td>");
+                if (device is MultiChannelDevice)
+                {
+                    MultiChannelDevice multichannelDevice = device as MultiChannelDevice;
+                    m_writer.WriteLine($"<td>{multichannelDevice.StorageSize}</td>");
+                }
+                m_writer.WriteLine("</tr>");
             }
 
             m_writer.WriteLine("   </table>");
